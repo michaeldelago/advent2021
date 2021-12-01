@@ -3,7 +3,7 @@ package advent2021
 object dayOne {
     def partOne(input: Seq[String]) = {
         val as_ints = input.map(_.toInt)
-        val shifted = as_ints.slice(1, as_ints.length)
+        val shifted = as_ints.view.slice(1, as_ints.length)
         as_ints.zip(shifted).map { case (a, b) => a < b }.count(_ == true)
     }
 
