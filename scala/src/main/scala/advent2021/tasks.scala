@@ -13,8 +13,13 @@ object Tasks extends App {
   day match {
     case "1" =>
       println(
-        s"Day $day, part 1: ${dayOne.partOne(input)}\n" +
-          s"Day $day, part 2: ${dayOne.partTwo(input)}"
+        s"Day $day, part 1: ${DayOne.partOne(input)}\n" +
+          s"Day $day, part 2: ${DayOne.partTwo(input)}"
+      )
+    case "2" =>
+      println(
+        s"Day $day, part 1: ${DayTwo.partOne(input)}\n" +
+          s"Day $day, part 2: ${DayTwo.partTwo(input)}"
       )
     case _ => println("Day not implemented!")
   }

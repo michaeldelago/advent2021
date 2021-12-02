@@ -1,6 +1,6 @@
 package advent2021
 
-object dayOne {
+object DayOne {
     def partOne(input: Seq[String]) = {
         val as_ints = input.map(_.toInt)
         val shifted = as_ints.view.slice(1, as_ints.length)
