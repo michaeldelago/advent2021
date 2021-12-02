@@ -20,7 +20,7 @@ defmodule AdventEx do
 
     case day do
       1 -> AdventEx.DayOne.tasks(stripped_input)
-      _ -> IO.puts("Day not Implemented!")
+      2 -> AdventEx.DayTwo.tasks(stripped_input)
     end
   end
 end
