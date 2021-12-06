@@ -36,7 +36,7 @@ object DayThree {
   private def mostCommonValue(numbers: Seq[IndexedSeq[Int]], field: Int) = {
     val sizes = numbers
       .map(_(field))
-      .groupBy(_ != 0)
+      .groupBy(_ != 0).view
       .mapValues(x => x.size)
 
     // println(sizes.getOrElse(true, 0), field)

@@ -8,7 +8,7 @@ object Tasks extends App {
     else Calendar.getInstance.get(Calendar.DAY_OF_MONTH)
   val input =
     if (new java.io.File(s"../inputs/$day").exists)
-      Source.fromFile(s"../inputs/$day").getLines.toList
+      Source.fromFile(s"../inputs/$day").getLines().toList
     else List()
   day match {
     case "1" =>
@@ -35,6 +35,11 @@ object Tasks extends App {
       println(
         s"Day $day, part 1: ${DayFive.partOne(input)}\n" +
           s"Day $day, part 2: ${DayFive.partTwo(input)}"
+      )
+    case "6" =>
+      println(
+        s"Day $day, part 1: ${DaySix.partOne(input)}\n" +
+          s"Day $day, part 2: ${DaySix.partTwo(input)}"
       )
     case _ => println("Day not implemented!")
   }

@@ -6,7 +6,7 @@ import scala.annotation.tailrec
 object DayFour {
   def partOne(input: Seq[String]) = {
     val (numbers, boards) = unfuckInput(input)
-    val numbersAsInts = numbers.map(_.toInt)
+    val numbersAsInts = numbers.map(_.toInt).toList
     var boardsAsInts = boards.map(Board(_, List.empty))
     val winningBoard = findWin(0, numbersAsInts, boardsAsInts)
     winningBoard.sumUnmatched
@@ -14,9 +14,9 @@ object DayFour {
 
   def partTwo(input: Seq[String]) = {
     val (numbers, boards) = unfuckInput(input)
-    val numbersAsInts = numbers.map(_.toInt)
+    val numbersAsInts = numbers.map(_.toInt).toList
     var boardsAsInts = boards.map(Board(_, List.empty))
-    val winningBoard = findLastWin(0, numbersAsInts, boardsAsInts, List.empty)
+    val winningBoard = findAllWins(0, numbersAsInts, boardsAsInts, List.empty)
     winningBoard.last.sumUnmatched
   }
 
@@ -39,7 +39,7 @@ object DayFour {
   }
 
   @tailrec
-  def findLastWin(n: Int, numbers: Seq[Int], boards: Seq[Board], winners: Seq[Board]): Seq[Board] = {
+  def findAllWins(n: Int, numbers: Seq[Int], boards: Seq[Board], winners: Seq[Board]): Seq[Board] = {
     val checks = boards.filter(_.checkWin)
     if (numbers(n) == numbers.last) {
       winners
@@ -47,7 +47,7 @@ object DayFour {
     else {
       val newBoards = boards.filterNot(_.checkWin).map(_.addNumber(numbers(n)))
       val newWinners = winners.appendedAll(checks)
-      findLastWin(n + 1, numbers, newBoards, newWinners)
+      findAllWins(n + 1, numbers, newBoards, newWinners)
     }
   }
 }
@@ -70,8 +70,8 @@ case class Board(asText: Seq[String], matches: List[(Int, Int)], lastNumber: Int
   }
 
   def checkWin = {
-    val y = matches.groupBy(_._1).mapValues(_.size).toMap
-    val x = matches.groupBy(_._2).mapValues(_.size).toMap
+    val y = matches.groupBy(_._1).view.mapValues(_.size).toMap
+    val x = matches.groupBy(_._2).view.mapValues(_.size).toMap
     x.filter(_._2 == 5).size > 0 || y.filter(_._2 == 5).size > 0
   }
 
