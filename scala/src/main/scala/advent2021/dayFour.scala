@@ -70,8 +70,8 @@ case class Board(asText: Seq[String], matches: List[(Int, Int)], lastNumber: Int
   }
 
   def checkWin = {
-    val y = matches.groupBy(_._1).view.mapValues(_.size).toMap
-    val x = matches.groupBy(_._2).view.mapValues(_.size).toMap
+    val y = matches.groupBy(_._1).transform((_, v) => v.length)
+    val x = matches.groupBy(_._2).transform((_, v) => v.length)
     x.filter(_._2 == 5).size > 0 || y.filter(_._2 == 5).size > 0
   }
 

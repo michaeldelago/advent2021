@@ -29,9 +29,7 @@ object DaySix {
         .split(",")
         .map(_.toInt)
         .groupBy(x => x)
-        .view
-        .mapValues(x => BigInt(x.length))
-        .toMap
+        .transform((_, v) => BigInt(v.length))
         .withDefault(x => 0)
     )
   }
@@ -42,6 +40,9 @@ object DaySix {
       fishAge(days - 1, school.rotate)
   }
 }
+
+// Used this for the first solution. 
+// Fell back to the SchoolOfFish class as it's much faster and less memory dependent
 
 case class LanternFish(days: Int) {
   def tick = if (days == 0) this.reproduce else this.copy(days - 1)
