@@ -24,7 +24,6 @@ object DayTen {
       case (acc, char) =>
         (5 * acc) + p2BracketScores.getOrElse(char, 1)
     }).sorted
-    println(scores)
     scores(scores.length / 2)
   }
   def getBadBracket(bracketSet: String): String = {
