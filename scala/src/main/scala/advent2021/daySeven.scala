@@ -11,8 +11,9 @@ object DaySeven {
 
   def partTwo(input: Seq[String]) = {
     val inputAsInts = input(0).split(",").map(_.toInt)
+    val length = inputAsInts.max
     val crabs = inputAsInts.map(ExpensiveCrabSub(_))
-    inputAsInts.map(n => crabs.map(_.moveto(n)).sum).min
+    (0 to length).map(n => crabs.map(_.moveto(n)).sum).min
   }
 
 }
@@ -28,11 +29,11 @@ case class ExpensiveCrabSub(pos: Int) {
     }
 
     @tailrec
-    private def stepcost(n: Int, current: Int): Int = {
-        if (n == 0)
+    private def stepcost(distance: Int, current: Int): Int = {
+        if (distance == 0)
             current
         else {
-            stepcost(n - 1, current + n)
+            stepcost(distance - 1, current + distance)
         }
     }
 }
