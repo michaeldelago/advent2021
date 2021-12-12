@@ -11,7 +11,6 @@ object DayEleven {
     val school = SchoolOfOctopus(octopussy)
     (1 to 100)
       .foldLeft(school) { case (school, round) =>
-        
         school.step.flash()
       }
       .flashes
@@ -53,9 +52,6 @@ object DayEleven {
       if (flashPoints.length == 0) {
         val newMatrix =
           matrix.map(_.map(octo => if (octo.energy > 9) octo.reset else octo))
-        Thread.sleep(1000)
-        print("\u001b[2J")
-        newMatrix.map(l => println(l.map(_.energy).mkString))
         this.copy(newMatrix, flashes)
       } else {
         val surroundingPoints = flashPoints.flatMap { case (x, y) =>
