@@ -39,30 +39,29 @@ object DaySix {
     else
       fishAge(days - 1, school.rotate)
   }
-}
+  // Used this for the first solution.
+  // Fell back to the SchoolOfFish class as it's much faster and less memory dependent
 
-// Used this for the first solution. 
-// Fell back to the SchoolOfFish class as it's much faster and less memory dependent
+  case class LanternFish(days: Int) {
+    def tick = if (days == 0) this.reproduce else this.copy(days - 1)
+    def reproduce = this.copy(6)
+  }
 
-case class LanternFish(days: Int) {
-  def tick = if (days == 0) this.reproduce else this.copy(days - 1)
-  def reproduce = this.copy(6)
-}
-
-case class SchoolOfFish(counts: Map[Int, BigInt]) {
-  def rotate = {
-    this.copy(
-      Map[Int, BigInt](
-        (8 -> counts(0)),
-        (7 -> counts(8)),
-        (6 -> (counts(7) + counts(0))),
-        (5 -> counts(6)),
-        (4 -> counts(5)),
-        (3 -> counts(4)),
-        (2 -> counts(3)),
-        (1 -> counts(2)),
-        (0 -> counts(1))
+  case class SchoolOfFish(counts: Map[Int, BigInt]) {
+    def rotate = {
+      this.copy(
+        Map[Int, BigInt](
+          (8 -> counts(0)),
+          (7 -> counts(8)),
+          (6 -> (counts(7) + counts(0))),
+          (5 -> counts(6)),
+          (4 -> counts(5)),
+          (3 -> counts(4)),
+          (2 -> counts(3)),
+          (1 -> counts(2)),
+          (0 -> counts(1))
+        )
       )
-    )
+    }
   }
 }

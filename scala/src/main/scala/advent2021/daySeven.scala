@@ -16,24 +16,24 @@ object DaySeven {
     (0 to length).map(n => crabs.map(_.moveto(n)).sum).min
   }
 
-}
-
-case class CrabSub(pos: Int) {
+  case class CrabSub(pos: Int) {
     def moveto(n: Int) = math.abs(pos - n)
-}
+  }
 
-case class ExpensiveCrabSub(pos: Int) {
+  case class ExpensiveCrabSub(pos: Int) {
     def moveto(n: Int) = {
-        val desired = math.abs(pos - n)
-        stepcost(desired, 0)
+      val desired = math.abs(pos - n)
+      stepcost(desired, 0)
     }
 
     @tailrec
     private def stepcost(distance: Int, current: Int): Int = {
-        if (distance == 0)
-            current
-        else {
-            stepcost(distance - 1, current + distance)
-        }
+      if (distance == 0)
+        current
+      else {
+        stepcost(distance - 1, current + distance)
+      }
     }
+  }
+
 }

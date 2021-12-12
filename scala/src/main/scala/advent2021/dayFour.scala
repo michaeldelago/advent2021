@@ -31,53 +31,62 @@ object DayFour {
     val checks = boards.filter(_.checkWin)
     if (checks.length > 0) {
       checks.head
-    }
-    else {
+    } else {
       val newBoards = boards.map(_.addNumber(numbers(n)))
       findWin(n + 1, numbers, newBoards)
     }
   }
 
   @tailrec
-  def findAllWins(n: Int, numbers: Seq[Int], boards: Seq[Board], winners: Seq[Board]): Seq[Board] = {
+  def findAllWins(
+      n: Int,
+      numbers: Seq[Int],
+      boards: Seq[Board],
+      winners: Seq[Board]
+  ): Seq[Board] = {
     val checks = boards.filter(_.checkWin)
     if (numbers(n) == numbers.last) {
       winners
-    }
-    else {
+    } else {
       val newBoards = boards.filterNot(_.checkWin).map(_.addNumber(numbers(n)))
       val newWinners = winners.appendedAll(checks)
       findAllWins(n + 1, numbers, newBoards, newWinners)
     }
   }
-}
+  case class Board(
+      asText: Seq[String],
+      matches: List[(Int, Int)],
+      lastNumber: Int = -1
+  ) {
+    val boardAsInts = asText
+      .map(_.split("\\s+").filterNot(_ == "").map(_.toInt).toVector)
+      .toVector
 
-case class Board(asText: Seq[String], matches: List[(Int, Int)], lastNumber: Int = -1) {
-  val boardAsInts = asText
-    .map(_.split("\\s+").filterNot(_ == "").map(_.toInt).toVector)
-    .toVector
-
-  def addNumber(n: Int) = {
-    val coords = boardAsInts.filter(line => line.contains(n)).map(line =>
-      (line.indexOf(n), boardAsInts.indexOf(line))
-    )
-    if (coords.length < 1) {
-      this
+    def addNumber(n: Int) = {
+      val coords = boardAsInts
+        .filter(line => line.contains(n))
+        .map(line => (line.indexOf(n), boardAsInts.indexOf(line)))
+      if (coords.length < 1) {
+        this
+      } else {
+        this.copy(asText, matches.appended(coords.head), n)
+      }
     }
-    else {
-      this.copy(asText, matches.appended(coords.head), n)
+
+    def checkWin = {
+      val y = matches.groupBy(_._1).transform((_, v) => v.length)
+      val x = matches.groupBy(_._2).transform((_, v) => v.length)
+      x.filter(_._2 == 5).size > 0 || y.filter(_._2 == 5).size > 0
     }
-  }
 
-  def checkWin = {
-    val y = matches.groupBy(_._1).transform((_, v) => v.length)
-    val x = matches.groupBy(_._2).transform((_, v) => v.length)
-    x.filter(_._2 == 5).size > 0 || y.filter(_._2 == 5).size > 0
-  }
-
-  def sumUnmatched = {
-    val unmatchedCoords = (0 to 4).flatMap(y => (0 to 4).map(x => (x, y))).filterNot(matches.contains(_))
-    val unmatchedSum = unmatchedCoords.map { case (x: Int, y: Int) => boardAsInts(y)(x) }.sum
-    unmatchedSum * lastNumber
+    def sumUnmatched = {
+      val unmatchedCoords = (0 to 4)
+        .flatMap(y => (0 to 4).map(x => (x, y)))
+        .filterNot(matches.contains(_))
+      val unmatchedSum = unmatchedCoords.map { case (x: Int, y: Int) =>
+        boardAsInts(y)(x)
+      }.sum
+      unmatchedSum * lastNumber
+    }
   }
 }
