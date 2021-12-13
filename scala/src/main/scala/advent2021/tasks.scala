@@ -65,6 +65,11 @@ object Tasks extends App {
         s"Day $day, part 1: ${DayEleven.partOne(input)}\n" +
           s"Day $day, part 2: ${DayEleven.partTwo(input)}"
       )
+    case 12 =>
+      println(
+        s"Day $day, part 1: ${DayTwelve.partOne(input)}\n" +
+          s"Day $day, part 2: ${DayTwelve.partTwo(input)}"
+      )
     case _ => println("Day not implemented!")
   }
 

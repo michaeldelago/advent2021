@@ -72,4 +72,10 @@ class AdventTest extends AnyFunSuite {
     assert(DayEleven.partTwo(input) == 195)
   }
 
+  test("Day Twelve") {
+    val input = Tasks.loadInput(12, true)
+    assert(DayTwelve.partOne(input) == 10)
+    assert(DayTwelve.partTwo(input) == 36)
+  }
+
 }
