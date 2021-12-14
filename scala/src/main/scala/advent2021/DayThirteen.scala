@@ -5,74 +5,47 @@ object DayThirteen extends AdventDay {
   type Matrix = Array[Array[Char]]
 
   override def partOne(input: Seq[String]): Int =
-    val initPoints = input.takeWhile(_ != "").map(_.split(",").map(Integer.parseInt(_)))
+    val initPoints = input.takeWhile(_ != "").map(_.split(",").map(Integer.parseInt(_))).map(x => (x(0), x(1))).toSet
     val folds = input.dropWhile(!_.matches("fold along .*")).map(_.split(" ").last)
       .map(_.split("=").toArray)
       .map { case Array(axis, pos) => (axis.head, Integer.parseInt(pos))}
-    val (maxX, maxY) = (initPoints.map(_(0)).max + 1, initPoints.map(_(1)).max + 1)
-    val initMatrix = Array.fill(maxY)(Array.fill(maxX)('.'))
-    val matrix = initPoints.foldLeft(initMatrix) { case (matrix, Array(x, y)) =>
-      matrix.updated(y, matrix(y).updated(x, '#'))
+
+    val res = folds.scanLeft(initPoints) { case (points, (axis, pos)) =>
+        axis match {
+            case 'x' =>
+                initPoints.map { case (x, y) => (pos - math.abs(pos - x), y)}
+            case 'y' =>
+                initPoints.map { case (x, y) => (x, pos - math.abs(pos - y))}
+        }
     }
 
-    val (axis, pos) = folds.head
-    val (a, b) = splitMatrix(matrix, axis, pos)
-    mergeMatrices(a, flipMatrix(b, axis)).map(_.count(_ == '#')).sum
+    // println(res.head.tail)
+    res.tail.head.size
 
   override def partTwo(input: Seq[String]): Int =
-    val initPoints = input.takeWhile(_ != "").map(_.split(",").map(Integer.parseInt(_)))
+    val initPoints = input.takeWhile(_ != "").map(_.split(",").map(Integer.parseInt(_))).map(x => (x(0), x(1))).toSet
     val folds = input.dropWhile(!_.matches("fold along .*")).map(_.split(" ").last)
       .map(_.split("=").toArray)
       .map { case Array(axis, pos) => (axis.head, Integer.parseInt(pos))}
-    val (maxX, maxY) = (initPoints.map(_(0)).max + 1, initPoints.map(_(1)).max + 1)
+
+    val res = folds.scanLeft(initPoints)(fold)
+
+    printMatrix(res.last)
+    res.last.size
+
+  def fold(points: Set[(Int, Int)], foldSpec: (Char, Int)) =
+    foldSpec match
+      case ('x', pos) => points.map((x, y) => (pos - (pos - x).abs, y))
+      case ('y', pos) => points.map((x, y) => (x, pos - (pos - y).abs))
+
+  def printMatrix(matrix: Set[(Int, Int)]) =
+    val maxX = matrix.map(_._1).max + 1
+    val maxY = matrix.map(_._2).max + 1
     val initMatrix = Array.fill(maxY)(Array.fill(maxX)('.'))
-    val matrix = initPoints.foldLeft(initMatrix) { case (matrix, Array(x, y)) =>
-      matrix.updated(y, matrix(y).updated(x, '#'))
-    }
-    val result = folds.foldLeft(matrix) {case (matrix, (axis, pos)) =>
-      val (a, b) = splitMatrix(matrix, axis, pos)
-      mergeMatrices(a, flipMatrix(b, axis))
-    }
-
-    printMatrix(result)
-    result.map(_.count(_ == '#')).sum
-
-  def splitMatrix(matrix: Matrix, axis: Char, pos: Int): (Matrix, Matrix) =
-    axis match {
-      case 'x' =>
-        val length = matrix.head.length
-        val (a, b) = (
-          matrix.map(_.slice(0, pos)),
-          matrix.map(_.slice(length - pos, length))
-        )
-        (a, b)
-
-      case 'y' =>
-        val height = matrix.length
-        (matrix.slice(0, pos), matrix.slice(height - pos, height))
-    }
-
-  def flipMatrix(matrix: Matrix, axis: Char): Matrix =
-    axis match {
-      case 'x' =>
-        matrix.map(_.reverse)
-      case 'y' =>
-        matrix.reverse
-    }
-
-  def mergeMatrices(matrixA: Matrix, matrixB: Matrix): Matrix =
-    val points = for
-      x <- (0 to matrixA.head.length - 1)
-      y <- (0 to matrixA.length - 1)
-    yield (x, y)
-
-    points.foldLeft(matrixB) { case (matrix, (x, y)) =>
-      if (matrixA(y)(x) == '#' || matrixB(y)(x) == '#')
-        matrix(y)(x) = '#'
+    matrix.foldLeft(initMatrix) { case (matrix, (x, y)) =>
+      matrix(y)(x) = '#'
       matrix
-    }
-
-  def printMatrix(matrix: Matrix) =
-    matrix.map(x => println(x.mkString("")))
+    }.map(x => println(x.mkString))
     println(" ")
+
 }
