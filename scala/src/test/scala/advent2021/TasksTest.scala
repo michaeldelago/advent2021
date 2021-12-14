@@ -1,7 +1,6 @@
 package advent2021
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.time.Days
-// import matchers.should._
 
 /** @version 1.1.0 */
 class AdventTest extends AnyFunSuite {
@@ -76,6 +75,12 @@ class AdventTest extends AnyFunSuite {
     val input = Tasks.loadInput(12, true)
     assert(DayTwelve.partOne(input) == 10)
     assert(DayTwelve.partTwo(input) == 36)
+  }
+
+  test("Day Thirteen") {
+    val input = Tasks.loadInput(13, true)
+    assert(DayThirteen.partOne(input) == 17)
+    assert(DayThirteen.partTwo(input) == -1)
   }
 
 }

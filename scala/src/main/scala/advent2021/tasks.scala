@@ -4,7 +4,7 @@ import java.util.Calendar
 
 object Tasks extends App {
   val day =
-    if (args.length > 0) Integer.parseInt(args(0))
+    if (args != null && args.length > 0) Integer.parseInt(args(0))
     else Calendar.getInstance.get(Calendar.DAY_OF_MONTH)
 
   val input = loadInput(day, false)
@@ -69,6 +69,11 @@ object Tasks extends App {
       println(
         s"Day $day, part 1: ${DayTwelve.partOne(input)}\n" +
           s"Day $day, part 2: ${DayTwelve.partTwo(input)}"
+      )
+    case 13 =>
+      println(
+        s"Day $day, part 1: ${DayThirteen.partOne(input)}\n" +
+          s"Day $day, part 2: ${DayThirteen.partTwo(input)}"
       )
     case _ => println("Day not implemented!")
   }

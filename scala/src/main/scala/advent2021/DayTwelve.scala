@@ -1,9 +1,9 @@
 package advent2021
 
-object DayTwelve {
+object DayTwelve extends AdventDay {
   type Path = Set[String]
 
-  def partOne(input: Seq[String]) = {
+  override def partOne(input: Seq[String]) = {
     val caveLinks = input
       .map(_.split("-"))
       .foldLeft(Map[String, Set[String]]().empty.withDefaultValue(Set.empty)) {
@@ -17,7 +17,7 @@ object DayTwelve {
     findPaths("start", caveLinks, Set("start"), true)
   }
 
-  def partTwo(input: Seq[String]) = {
+  override def partTwo(input: Seq[String]) = {
     val caveLinks = input
       .map(_.split("-"))
       .foldLeft(Map[String, Set[String]]().empty.withDefaultValue(Set.empty)) {

@@ -6,7 +6,7 @@ object DayEleven {
   def partOne(input: Seq[String]) = {
     val octopussy = input
       .filterNot(_ == "")
-      .map(_.map(_.toInt - '0').toVector.map(Octopus))
+      .map(_.map(_.toInt - '0').toVector.map(Octopus.apply))
       .toVector
     val school = SchoolOfOctopus(octopussy)
     (1 to 100)
@@ -19,7 +19,7 @@ object DayEleven {
   def partTwo(input: Seq[String]) = {
     val octopussy = input
       .filterNot(_ == "")
-      .map(_.map(_.toInt - '0').toVector.map(Octopus))
+      .map(_.map(_.toInt - '0').toVector.map(Octopus.apply))
       .toVector
     val school = SchoolOfOctopus(octopussy)
     getAllFlash(school)
@@ -61,7 +61,7 @@ object DayEleven {
           case (matrix, (x, y)) =>
             matrix.updated(y, matrix(y).updated(x, matrix(y)(x).step))
         }
-        
+
         this.copy(newMatrix, flashes + flashPoints.length).flash(flashPoints.appendedAll(flashed))
       }
     }
