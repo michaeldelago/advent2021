@@ -80,7 +80,7 @@ class AdventTest extends AnyFunSuite {
   test("Day Thirteen") {
     val input = Tasks.loadInput(13, true)
     assert(DayThirteen.partOne(input) == 17)
-    assert(DayThirteen.partTwo(input) == -1)
+    assert(DayThirteen.partTwo(input) == 16)
   }
 
 }
