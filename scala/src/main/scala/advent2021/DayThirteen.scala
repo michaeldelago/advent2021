@@ -4,7 +4,7 @@ object DayThirteen extends AdventDay {
 
   type Matrix = Array[Array[Char]]
 
-  override def partOne(input: Seq[String]): Int =
+  override def partOne(input: Seq[String]) =
     val initPoints = input.takeWhile(_ != "").map(_.split(",").map(Integer.parseInt(_))).map(x => (x(0), x(1))).toSet
     val folds = input.dropWhile(!_.matches("fold along .*")).map(_.split(" ").last)
       .map(_.split("=").toArray)
@@ -13,16 +13,16 @@ object DayThirteen extends AdventDay {
     val res = folds.scanLeft(initPoints) { case (points, (axis, pos)) =>
         axis match {
             case 'x' =>
-                initPoints.map { case (x, y) => (pos - math.abs(pos - x), y)}
+                initPoints.map((x, y) => (pos - (pos - x).abs, y))
             case 'y' =>
-                initPoints.map { case (x, y) => (x, pos - math.abs(pos - y))}
+                initPoints.map((x, y) => (x, pos - (pos - y).abs))
         }
     }
 
     // println(res.head.tail)
     res.tail.head.size
 
-  override def partTwo(input: Seq[String]): Int =
+  override def partTwo(input: Seq[String]) =
     val initPoints = input.takeWhile(_ != "").map(_.split(",").map(Integer.parseInt(_))).map(x => (x(0), x(1))).toSet
     val folds = input.dropWhile(!_.matches("fold along .*")).map(_.split(" ").last)
       .map(_.split("=").toArray)
